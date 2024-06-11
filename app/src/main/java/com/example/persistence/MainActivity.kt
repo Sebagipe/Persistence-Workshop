@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
         setContent{
             PersistenceTheme {
                 val state by viewModel._state.collectAsState()
-                ToDoScreen(state = state, onEvent = viewModel::onEvent, todos = viewModel._todos)
+                ToDoScreen(state = state, viewModel = viewModel)
             }
         }
     }

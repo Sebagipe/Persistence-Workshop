@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class ToDo (
     val name : String,
-    val description : String = "",
     val completed :Boolean = false,
     @PrimaryKey(autoGenerate = true)
     val taskId : Int = 0

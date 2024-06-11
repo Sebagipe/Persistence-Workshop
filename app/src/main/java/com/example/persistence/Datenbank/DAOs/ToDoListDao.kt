@@ -1,5 +1,6 @@
 package com.example.persistence.Datenbank.DAOs
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -23,10 +24,10 @@ interface ToDoListDao {
 
 
     @Query("Select * from ToDo where completed = false")
-    fun getPendingEntries () : Flow<List<ToDo>>
+    fun getPendingEntries () : LiveData<List<ToDo>>
 
     @Query("Select * from ToDo where completed = true")
-    fun getCompletedEntries () :Flow<List<ToDo>>
+    fun getCompletedEntries () : LiveData<List<ToDo>>
 
 
 
