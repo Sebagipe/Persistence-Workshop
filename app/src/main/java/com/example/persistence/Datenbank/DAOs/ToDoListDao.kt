@@ -7,7 +7,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.persistence.Datenbank.Entities.ToDo
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ToDoListDao {
@@ -20,7 +19,8 @@ interface ToDoListDao {
     @Update
     fun completeToDo(todo : ToDo)
 
-
+    @Update
+    fun uncompleteToDo(todo : ToDo)
 
 
     @Query("Select * from ToDo where completed = false")
