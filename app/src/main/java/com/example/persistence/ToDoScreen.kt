@@ -29,12 +29,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ToDoScreen(
     state : ToDoListState,
-    viewModel: ToDoViewModel
+    viewModel: ToDoViewModel,
+    modifier: Modifier
     ) {
     val todoList by viewModel.todoList.observeAsState()
     val completedToDos by viewModel.completedToDos.observeAsState()
 
-    Column {
+    Column (
+        modifier = modifier
+    ) {
         Row(
             modifier = Modifier.padding(20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -45,10 +48,14 @@ fun ToDoScreen(
                 onValueChange = {
                     viewModel.onEvent(ToDoListEvent.SetName(it))
                 },
+                modifier = Modifier.weight(3F)
 
                 )
 
-            Button(onClick = { viewModel.onEvent(ToDoListEvent.saveToDo) }) {
+            Button(
+                onClick = { viewModel.onEvent(ToDoListEvent.saveToDo) },
+                modifier = Modifier.weight(1F)
+            ) {
                 Text(text = "Add")
             }
         }
