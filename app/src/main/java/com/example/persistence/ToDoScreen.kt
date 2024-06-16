@@ -32,8 +32,8 @@ fun ToDoScreen(
     viewModel: ToDoViewModel,
     modifier: Modifier
     ) {
-    val todoList by viewModel.todoList.observeAsState()
-    val completedToDos by viewModel.completedToDos.observeAsState()
+    val incompleteEntries by viewModel.incompleteEntries.observeAsState()
+    val completedEntries by viewModel.completedEntries.observeAsState()
 
     Column (
         modifier = modifier
@@ -64,7 +64,7 @@ fun ToDoScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item(){ Text(text = "Pending ToDos:") }
-            items(todoList ?: emptyList()) { todo ->
+            items(incompleteEntries ?: emptyList()) { entry ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -72,14 +72,14 @@ fun ToDoScreen(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = todo.name,
+                            text = entry.name,
                             fontSize = 20.sp
                         )
                     }
                     Checkbox(
                         checked = false,
-                        onCheckedChange = { viewModel.onEvent(ToDoListEvent.completeToDo(todo)) })
-                    IconButton(onClick = { viewModel.onEvent(ToDoListEvent.DeleteToDo(todo)) }) {
+                        onCheckedChange = { viewModel.onEvent(ToDoListEvent.completeEntry(entry)) })
+                    IconButton(onClick = { viewModel.onEvent(ToDoListEvent.DeleteEntry(entry)) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete contact"
@@ -90,7 +90,7 @@ fun ToDoScreen(
             item(){
                 Text(text = "Completed ToDos:")
             }
-            items(completedToDos ?: emptyList()) { todo ->
+            items(completedEntries ?: emptyList()) { entry ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -98,14 +98,14 @@ fun ToDoScreen(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = todo.name,
+                            text = entry.name,
                             fontSize = 20.sp
                         )
                     }
                     Checkbox(
                         checked = true,
-                        onCheckedChange = { viewModel.onEvent(ToDoListEvent.uncompleteToDo(todo)) })
-                    IconButton(onClick = { viewModel.onEvent(ToDoListEvent.DeleteToDo(todo)) }) {
+                        onCheckedChange = { viewModel.onEvent(ToDoListEvent.uncompleteEntry(entry)) })
+                    IconButton(onClick = { viewModel.onEvent(ToDoListEvent.DeleteEntry(entry)) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete contact"

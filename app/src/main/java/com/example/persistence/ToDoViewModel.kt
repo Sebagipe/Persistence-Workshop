@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.persistence.Datenbank.DAOs.ToDoListDao
-import com.example.persistence.Datenbank.Entities.ToDo
+import com.example.persistence.Datenbank.Entities.ListEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -14,8 +14,8 @@ class ToDoViewModel (
     private val dao : ToDoListDao
 ) : ViewModel() {
 
-    val todoList : LiveData<List<ToDo>> = dao.getPendingEntries()
-    val completedToDos : LiveData<List<ToDo>> = dao.getCompletedEntries()
+    val incompleteEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
+    val completedEntries : LiveData<List<ListEntry>> = dao.getCompletedEntries()
     val _state = MutableStateFlow(ToDoListState())
 
 
@@ -26,9 +26,9 @@ class ToDoViewModel (
             ToDoListEvent.saveToDo -> {
                 val name = _state.value.name
 
-                val todo = ToDo(name = name)
+                val newEntry = ListEntry(name = name)
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.insertToDo(todo)
+                    dao.insertToDo(newEntry)
                 }
 
                 _state.update { it.copy(
@@ -36,21 +36,21 @@ class ToDoViewModel (
                 ) }
             }
 
-            is ToDoListEvent.DeleteToDo -> {
+            is ToDoListEvent.DeleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.deleteToDo(event.todo)
+                    dao.deleteEntry(event.entry)
                 }
 
             }
 
-            is ToDoListEvent.completeToDo -> {
+            is ToDoListEvent.completeEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.completeToDo(event.toDo.copy(completed = true))
+                    dao.completeEntry(event.entry.copy(completed = true))
                 }
             }
-            is ToDoListEvent.uncompleteToDo -> {
+            is ToDoListEvent.uncompleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.uncompleteToDo(event.toDo.copy(completed = false))
+                    dao.uncompleteEntry(event.entry.copy(completed = false))
                 }
             }
 

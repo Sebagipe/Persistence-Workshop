@@ -6,28 +6,28 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.persistence.Datenbank.Entities.ToDo
+import com.example.persistence.Datenbank.Entities.ListEntry
 
 @Dao
 interface ToDoListDao {
     @Delete
-    fun deleteToDo(todo : ToDo)
+    fun deleteEntry(entry : ListEntry)
 
     @Insert
-    fun insertToDo (todo : ToDo)
+    fun insertToDo (entry : ListEntry)
 
     @Update
-    fun completeToDo(todo : ToDo)
+    fun completeEntry(entry : ListEntry)
 
     @Update
-    fun uncompleteToDo(todo : ToDo)
+    fun uncompleteEntry(entry : ListEntry)
 
 
-    @Query("Select * from ToDo where completed = false")
-    fun getPendingEntries () : LiveData<List<ToDo>>
+    @Query("Select * from ListEntry where completed = false")
+    fun getPendingEntries () : LiveData<List<ListEntry>>
 
-    @Query("Select * from ToDo where completed = true")
-    fun getCompletedEntries () : LiveData<List<ToDo>>
+    @Query("Select * from ListEntry where completed = true")
+    fun getCompletedEntries () : LiveData<List<ListEntry>>
 
 
 

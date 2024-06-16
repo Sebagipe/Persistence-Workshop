@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 
 @Entity
-data class ToDo (
+data class ListEntry (
     val name : String,
     val completed :Boolean = false,
     @PrimaryKey(autoGenerate = true)
