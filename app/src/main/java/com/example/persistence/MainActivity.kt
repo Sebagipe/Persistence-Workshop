@@ -41,22 +41,8 @@ import com.example.persistence.ui.theme.PersistenceTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val db by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            ToDoListDatabase::class.java,
-            "database.db"
-        ).build()
-    }
-    private val viewModel by viewModels<ToDoViewModel>(
-        factoryProducer = {
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return ToDoViewModel(db.dao) as T
-                }
-            }
-        }
-    )
+
+    private val viewModel by viewModels<ToDoViewModel>()
 
     private val dataStore by lazy { DataStore(applicationContext) }
 

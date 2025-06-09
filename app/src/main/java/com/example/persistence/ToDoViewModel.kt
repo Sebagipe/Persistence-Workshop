@@ -1,18 +1,31 @@
 package com.example.persistence
 
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
 import com.example.persistence.Datenbank.DAOs.ToDoListDao
 import com.example.persistence.Datenbank.Entities.ListEntry
+import com.example.persistence.Datenbank.ToDoListDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ToDoViewModel (
-    private val dao : ToDoListDao
-) : ViewModel() {
+    app: Application
+) : AndroidViewModel(app) {
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            app.applicationContext,
+            ToDoListDatabase::class.java,
+            "database.db"
+        ).build()
+    }
+    private val dao = db.dao
 
     val incompleteEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
     val completedEntries : LiveData<List<ListEntry>> = dao.getCompletedEntries()
