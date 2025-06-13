@@ -1,6 +1,6 @@
 package com.example.persistence
 
-import com.example.persistence.Datenbank.Entities.ListEntry
+import com.example.persistence.database.entities.ListEntry
 
 sealed interface ToDoListEvent {
     object saveToDo : ToDoListEvent
