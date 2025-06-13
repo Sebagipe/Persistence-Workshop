@@ -22,6 +22,7 @@ class ToDoViewModel(
     val _state = MutableStateFlow(ToDoListState())
 
 
+    //TODO: to simple functions
     fun onEvent(event: ToDoListEvent, state: ToDoListState = ToDoListState()) {
         when (event) {
             // Hint: Implement Methods in the ToDoListDao that will make the corresponding change to the database

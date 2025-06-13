@@ -55,7 +55,7 @@ dependencies {
     // Room
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler) //TODO migrate to KSP
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7") //TODO: to version catalog
