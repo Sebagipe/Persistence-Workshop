@@ -18,21 +18,15 @@ class ToDoViewModel (
     app: Application
 ) : AndroidViewModel(app) {
 
-    private val db by lazy {
-        Room.databaseBuilder(
-            app.applicationContext,
-            ToDoListDatabase::class.java,
-            "database.db"
-        ).build()
-    }
+    private val db = ToDoListDatabase.getInstance(app.applicationContext)
     private val dao = db.dao
 
-    val incompleteEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
-    val completedEntries : LiveData<List<ListEntry>> = dao.getCompletedEntries()
+    val incompleteEntries = dao.getPendingEntries()
+    val completedEntries = dao.getCompletedEntries()
     val _state = MutableStateFlow(ToDoListState())
 
 
-    fun onEvent(event: ToDoListEvent) {
+    fun onEvent(event: ToDoListEvent, state: ToDoListState = ToDoListState()) {
         when (event) {
             // Hint: Implement Methods in the ToDoListDao that will make the corresponding change to the database
 

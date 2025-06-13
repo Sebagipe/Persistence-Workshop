@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 
 private const val PREFERENCES_NAME = "user_preferences"
 
+// Top Level -> wird nur einmal definiert
 private val Context.dataStore by preferencesDataStore(PREFERENCES_NAME)
 
 class DataStore(context: Context) {
@@ -21,7 +22,7 @@ class DataStore(context: Context) {
 
     val alwaysOnScreenFlow: Flow<Boolean> = dataStore.data
         .map { preferences ->
-            preferences[ALWAYS_ON_SCREEN_KEY] ?: false
+            preferences[ALWAYS_ON_SCREEN_KEY] == true
         }
 
     suspend fun setAlwaysOnScreen(enabled: Boolean) {

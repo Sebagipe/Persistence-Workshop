@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.persistence.Datenbank.Entities.ListEntry
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ToDoListDao {
@@ -24,10 +25,10 @@ interface ToDoListDao {
 
 
     @Query("Select * from ListEntry where completed = false")
-    fun getPendingEntries () : LiveData<List<ListEntry>>
+    fun getPendingEntries () : Flow<List<ListEntry>>
 
     @Query("Select * from ListEntry where completed = true")
-    fun getCompletedEntries () : LiveData<List<ListEntry>>
+    fun getCompletedEntries () : Flow<List<ListEntry>>
 
 
 

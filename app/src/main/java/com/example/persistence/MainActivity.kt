@@ -29,21 +29,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
-import com.example.persistence.Datenbank.ToDoListDatabase
 import com.example.persistence.ui.theme.PersistenceTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-
-    private val viewModel by viewModels<ToDoViewModel>()
-
     private val dataStore by lazy { DataStore(applicationContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,10 +96,7 @@ class MainActivity : ComponentActivity() {
                 )
             },
             content = {
-                val state by viewModel._state.collectAsState()
                 ToDoScreen(
-                    state = state,
-                    viewModel = viewModel,
                     modifier = Modifier.padding(it)
                 )
             }

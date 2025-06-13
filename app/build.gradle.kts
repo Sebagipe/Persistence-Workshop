@@ -1,17 +1,18 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.compose.compiler)
     id("kotlin-kapt")
 }
 
 android {
     namespace = "com.example.persistence"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.persistence"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -41,22 +42,18 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
+
 }
 
 dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.datastore.core.android)
-    // Room Stuff
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-ktx:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    // Room
+    implementation(libs.androidx.room.ktx)
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -65,7 +62,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.datastore:datastore:1.1.1")
 
-    //
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
