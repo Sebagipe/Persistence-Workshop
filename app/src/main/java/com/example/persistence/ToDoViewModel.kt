@@ -1,20 +1,16 @@
 package com.example.persistence
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.example.persistence.Datenbank.DAOs.ToDoListDao
-import com.example.persistence.Datenbank.Entities.ListEntry
-import com.example.persistence.Datenbank.ToDoListDatabase
+import com.example.persistence.database.entities.ListEntry
+import com.example.persistence.database.ToDoListDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ToDoViewModel (
+class ToDoViewModel(
     app: Application
 ) : AndroidViewModel(app) {
 
@@ -26,6 +22,7 @@ class ToDoViewModel (
     val _state = MutableStateFlow(ToDoListState())
 
 
+    //TODO: to simple functions
     fun onEvent(event: ToDoListEvent, state: ToDoListState = ToDoListState()) {
         when (event) {
             // Hint: Implement Methods in the ToDoListDao that will make the corresponding change to the database
@@ -38,9 +35,11 @@ class ToDoViewModel (
                     dao.insertToDo(newEntry)
                 }
 
-                _state.update { it.copy(
-                    name = "",
-                ) }
+                _state.update {
+                    it.copy(
+                        name = "",
+                    )
+                }
             }
 
             is ToDoListEvent.DeleteEntry -> {
@@ -55,6 +54,7 @@ class ToDoViewModel (
                     dao.completeEntry(event.entry.copy(completed = true))
                 }
             }
+
             is ToDoListEvent.uncompleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     dao.uncompleteEntry(event.entry.copy(completed = false))

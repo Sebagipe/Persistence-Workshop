@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,13 +36,13 @@ import com.example.persistence.ui.theme.PersistenceTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val dataStore by lazy { DataStore(applicationContext) }
+    private val dataStore by lazy { DataStore(applicationContext) } //TODO: to viewmodel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val isAlwaysOnScreen by dataStore.alwaysOnScreenFlow.collectAsState(initial = false)
-            val coroutineScope = rememberCoroutineScope()
+            val coroutineScope = rememberCoroutineScope() //TODO: remove
 
             if (isAlwaysOnScreen) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -63,7 +62,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier,
                             isAlwaysOnScreen = isAlwaysOnScreen,
                             onAlwaysOnScreenChange = { enabled ->
-                                coroutineScope.launch {
+                                coroutineScope.launch { //TODO: viewmodel
                                     dataStore.setAlwaysOnScreen(enabled)
                                 }
                             }
@@ -74,9 +73,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    //TODO: not nested inside activity + prview
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun StartScreen(navController: NavHostController, modifier: Modifier = Modifier) {
+    fun StartScreen(
+        navController: NavHostController, //TODO: hoist
+        modifier: Modifier = Modifier
+    ) {
         Scaffold(
             modifier = modifier,
             topBar = {
@@ -96,17 +99,16 @@ class MainActivity : ComponentActivity() {
                 )
             },
             content = {
-                ToDoScreen(
-                    modifier = Modifier.padding(it)
-                )
+                ToDoScreen(modifier = Modifier.padding(it))
             }
         )
     }
 
+    //TODO: not nested inside activity + preview
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun SettingsScreen(
-        navController: NavHostController,
+        navController: NavHostController, //TODO: hoist
         modifier: Modifier = Modifier,
         isAlwaysOnScreen: Boolean,
         onAlwaysOnScreenChange: (Boolean) -> Unit
@@ -119,7 +121,7 @@ class MainActivity : ComponentActivity() {
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
-                                imageVector = Icons.Filled.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Arrow Back Button"
                             )
                         }
@@ -145,6 +147,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//TODO: preview
 @Composable
 fun SettingsItem(
     text: String,

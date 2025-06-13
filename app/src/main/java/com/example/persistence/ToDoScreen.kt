@@ -1,6 +1,5 @@
 package com.example.persistence
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,28 +17,27 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.flow.MutableStateFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+//TODO: (like all composables:) move to ui or composable package
+//TODO: make settings composable a screen level composables as well
+//TODO: Add composable ToDoScreen(completedEntries: List<Entry>, incompleteEntries: List<Entry, modifier, ...) + add preview + use this composeable with the existing one
 @Composable
 fun ToDoScreen(
+    modifier: Modifier = Modifier,
     viewModel: ToDoViewModel = viewModel<ToDoViewModel>(),
-    modifier: Modifier
-    ) {
+) {
     val incompleteEntries by viewModel.incompleteEntries.collectAsStateWithLifecycle(emptyList())
     val completedEntries by viewModel.completedEntries.collectAsStateWithLifecycle(emptyList())
 
-    Column (
+    Column(
         modifier = modifier
     ) {
         Row(
@@ -54,7 +52,7 @@ fun ToDoScreen(
                 },
                 modifier = Modifier.weight(3F)
 
-                )
+            )
 
             Button(
                 onClick = { viewModel.onEvent(ToDoListEvent.saveToDo) },
@@ -67,7 +65,7 @@ fun ToDoScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item(){ Text(text = "Pending ToDos:") }
+            item() { Text(text = "Pending ToDos:") }
             items(incompleteEntries ?: emptyList()) { entry ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -91,7 +89,7 @@ fun ToDoScreen(
                     }
                 }
             }
-            item(){
+            item() {
                 Text(text = "Completed ToDos:")
             }
             items(completedEntries ?: emptyList()) { entry ->
