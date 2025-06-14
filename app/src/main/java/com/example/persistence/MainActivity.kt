@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -18,53 +15,86 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.persistence.ui.Screens.SettingsScreen
+import com.example.persistence.ui.Screens.ToDoScreen
 import com.example.persistence.ui.theme.PersistenceTheme
-import kotlinx.coroutines.launch
+import com.example.persistence.viewmodels.SettingsViewModel
+import kotlinx.serialization.Serializable
+
 
 class MainActivity : ComponentActivity() {
-    private val dataStore by lazy { DataStore(applicationContext) } //TODO: to viewmodel
 
+    val settingsViewModel by viewModels<SettingsViewModel>()
+
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val isAlwaysOnScreen by dataStore.alwaysOnScreenFlow.collectAsState(initial = false)
-            val coroutineScope = rememberCoroutineScope() //TODO: remove
-
+            // Settings
+            val isAlwaysOnScreen by settingsViewModel.dataStore.alwaysOnScreenFlow.collectAsStateWithLifecycle(initialValue = false)
             if (isAlwaysOnScreen) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
             PersistenceTheme {
                 val navController = rememberNavController()
-                NavHost(navController, startDestination = "start") {
-                    composable("start") {
-                        StartScreen(
-                            navController = navController,
-                            modifier = Modifier
+                NavHost(navController = navController, startDestination = ToDoScreen) {
+                    composable<ToDoScreen> {
+                        Scaffold(
+                            modifier = Modifier,
+                            topBar = {
+                                CenterAlignedTopAppBar(
+                                    title = { Text("To-Do") },
+                                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                                    ),
+                                    actions = {
+                                        IconButton(onClick = { navController.navigate(SettingsScreen) }) {
+                                            Icon(
+                                                imageVector = Icons.Filled.Settings,
+                                                contentDescription = "Settings Button"
+                                            )
+                                        }
+                                    }
+                                )
+                            },
+                            content = {
+                                ToDoScreen(modifier = Modifier.padding(it))
+                            }
                         )
                     }
-                    composable("settings") {
-                        SettingsScreen(
-                            navController,
+                    composable<SettingsScreen> {
+                        Scaffold(
                             modifier = Modifier,
-                            isAlwaysOnScreen = isAlwaysOnScreen,
-                            onAlwaysOnScreenChange = { enabled ->
-                                coroutineScope.launch { //TODO: viewmodel
-                                    dataStore.setAlwaysOnScreen(enabled)
-                                }
+                            topBar = {
+                                CenterAlignedTopAppBar(
+                                    navigationIcon = {
+                                        IconButton(onClick = { navController.popBackStack() }) {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                                contentDescription = "Arrow Back Button"
+                                            )
+                                        }
+                                    },
+                                    title = { Text("Settings") },
+                                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                                    ),
+                                )
+                            },
+                            content = {
+                                SettingsScreen(
+                                    viewModel = settingsViewModel,
+                                    modifier = Modifier.padding(it),
+                                    isAlwaysOnScreen = isAlwaysOnScreen,
+                                )
                             }
                         )
                     }
@@ -72,102 +102,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    //TODO: not nested inside activity + prview
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun StartScreen(
-        navController: NavHostController, //TODO: hoist
-        modifier: Modifier = Modifier
-    ) {
-        Scaffold(
-            modifier = modifier,
-            topBar = {
-                CenterAlignedTopAppBar(
-                    title = { Text("To-Do") },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    ),
-                    actions = {
-                        IconButton(onClick = { navController.navigate("settings") }) {
-                            Icon(
-                                imageVector = Icons.Filled.Settings,
-                                contentDescription = "Settings Button"
-                            )
-                        }
-                    }
-                )
-            },
-            content = {
-                ToDoScreen(modifier = Modifier.padding(it))
-            }
-        )
-    }
-
-    //TODO: not nested inside activity + preview
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun SettingsScreen(
-        navController: NavHostController, //TODO: hoist
-        modifier: Modifier = Modifier,
-        isAlwaysOnScreen: Boolean,
-        onAlwaysOnScreenChange: (Boolean) -> Unit
-    ) {
-
-        Scaffold(
-            modifier = modifier,
-            topBar = {
-                CenterAlignedTopAppBar(
-                    navigationIcon = {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Arrow Back Button"
-                            )
-                        }
-                    },
-                    title = { Text("Settings") },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    ),
-                )
-            },
-            content = {
-                Column(
-                    modifier = Modifier.padding(it)
-                ) {
-                    SettingsItem(
-                        text = "Display Always On",
-                        isChecked = isAlwaysOnScreen,
-                        onCheckedChange = onAlwaysOnScreenChange
-                    )
-                }
-            }
-        )
-    }
 }
 
-//TODO: preview
-@Composable
-fun SettingsItem(
-    text: String,
-    modifier: Modifier = Modifier,
-    isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = modifier.padding(10.dp),
-        horizontalArrangement = Arrangement.End
-    ) {
-        Text(
-            text = text,
-            fontSize = 20.sp,
-            modifier = Modifier.padding(8.dp)
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Switch(
-            checked = isChecked,
-            onCheckedChange = onCheckedChange,
-        )
-    }
-}
+@Serializable
+object ToDoScreen
+
+@Serializable
+object SettingsScreen

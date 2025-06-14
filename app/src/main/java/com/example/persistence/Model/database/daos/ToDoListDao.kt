@@ -1,11 +1,11 @@
-package com.example.persistence.database.daos
+package com.example.persistence.Model.database.daos
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.persistence.database.entities.ListEntry
+import com.example.persistence.Model.database.entities.ListEntry
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,15 +14,10 @@ interface ToDoListDao {
     fun deleteEntry(entry : ListEntry)
 
     @Insert
-    fun insertToDo (entry : ListEntry)
+    fun insertEntry (entry : ListEntry)
 
     @Update
-    fun completeEntry(entry : ListEntry)
-
-    //TODO: redundant update
-    @Update
-    fun uncompleteEntry(entry : ListEntry)
-
+    fun updateEntry(entry : ListEntry)
 
     @Query("Select * from ListEntry where completed = 0")
     fun getPendingEntries () : Flow<List<ListEntry>>

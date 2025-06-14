@@ -1,4 +1,4 @@
-package com.example.persistence.database.entities
+package com.example.persistence.Model.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

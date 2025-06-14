@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
     id("com.google.devtools.ksp")
 }
 
@@ -51,20 +52,6 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.datastore.core.android)
     implementation(libs.androidx.lifecycle.runtime.compose)
-
-    // Room
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7") //TODO: to version catalog
-
-    // DataStore
-    implementation("androidx.datastore:datastore-preferences:1.1.1") //TODO: to version catalog
-    implementation("androidx.datastore:datastore:1.1.1") //TODO: to version catalog
-
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -80,4 +67,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Room
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+
+
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore)
+
 }
