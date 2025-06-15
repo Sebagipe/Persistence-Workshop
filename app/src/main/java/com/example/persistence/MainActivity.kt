@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             // Settings
             val isAlwaysOnScreen by settingsViewModel.dataStore.alwaysOnScreenFlow.collectAsStateWithLifecycle(initialValue = false)
+            // TODO 6: Sammle darkTheme über den DataStore (mit Lifecycle-Awareness)
             val darkTheme by settingsViewModel.dataStore.darkThemeFlow.collectAsStateWithLifecycle(false)
 
             // Actually setting alwaysOnScreen on and off
