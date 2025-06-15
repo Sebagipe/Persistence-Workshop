@@ -6,7 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.persistence.Model.database.daos.ToDoListDao
 import com.example.persistence.Model.database.entities.ListEntry
-
+//TODO 2: Implementere die Datenbank Klasse
+// - Hier soll sichergestellt werden, dass die Datenbank genau einmal instantiiert wird (siehe Vorlesungsfolien)
 @Database(version = 1, entities = [ListEntry::class])
 abstract class ToDoListDatabase : RoomDatabase() {
     abstract val dao: ToDoListDao
