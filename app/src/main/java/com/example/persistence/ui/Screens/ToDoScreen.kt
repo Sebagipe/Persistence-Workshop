@@ -44,8 +44,9 @@ fun ToDoScreen(
     modifier: Modifier = Modifier,
     viewModel: ToDoViewModel = viewModel<ToDoViewModel>(),
 ) {
-    val incompleteEntries by viewModel.incompleteEntries.collectAsStateWithLifecycle(emptyList())
-    val completedEntries by viewModel.completedEntries.collectAsStateWithLifecycle(emptyList())
+    //TODO: Greife hier auf die Einträge in der Datenkbank über den ViewModel (Hinweis: LiveData)
+    val incompleteEntries by //..
+    val completedEntries by //..
     ToDoScreen(modifier, incompleteEntries, completedEntries, viewModel)
 }
 @Preview

@@ -1,5 +1,6 @@
 package com.example.persistence.Model.database.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,21 +11,19 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ToDoListDao {
-    @Delete
-    fun deleteEntry(entry : ListEntry)
+    //TODO ...
+    fun removeEntry(entry : ListEntry)
 
-    @Insert
-    fun insertEntry (entry : ListEntry)
+    //TODO ...
+    fun addEntry (entry : ListEntry)
 
-    @Update
-    fun updateEntry(entry : ListEntry)
+    //TODO ...
+    fun changeEntry (entry : ListEntry)
 
-    @Query("Select * from ListEntry where completed = 0")
-    fun getPendingEntries () : Flow<List<ListEntry>>
+    //TODO: Funktion, die alle Einträge zurückgibt, die noch nicht erledigt wurden
+    fun getPendingEntries () : LiveData<List<ListEntry>>
 
-    @Query("Select * from ListEntry where completed = 1")
-    fun getCompletedEntries () : Flow<List<ListEntry>>
-
-
+    //TODO:  Funktion, die alle Einträge zurückgibt, die bereits erledigt wurden
+    fun getCompletedEntries () : LiveData<List<ListEntry>>
 
 }

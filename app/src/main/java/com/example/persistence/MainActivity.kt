@@ -26,7 +26,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.persistence.ui.Screens.SettingsScreen
 import com.example.persistence.ui.Screens.ToDoScreen
 import com.example.persistence.ui.theme.PersistenceTheme
-import com.example.persistence.viewmodels.SettingsViewModel
 import kotlinx.serialization.Serializable
 
 
