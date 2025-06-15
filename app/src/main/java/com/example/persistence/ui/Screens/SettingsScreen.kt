@@ -40,7 +40,7 @@ fun SettingsScreen(
             isChecked = darkThemeEnabled,
             // TODO 5: Übergebe die ViewModel-Funktion zur Veränderung
             //  der DarkTheme Einstellung an SettingsItem weiter
-            onCheckedChange = {viewModel.setDarkTheme(!darkThemeEnabled)}
+            onCheckedChange = ...
         )
     }
 }

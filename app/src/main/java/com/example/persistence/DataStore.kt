@@ -17,8 +17,7 @@ class DataStore(context: Context) {
 
     companion object {
         val ALWAYS_ON_SCREEN_KEY = booleanPreferencesKey("always_on_screen")
-        //TODO 1: Definiere die PreferenceKey für Dark Theme
-        val DARK_THEME = booleanPreferencesKey("DARK_THEME")
+        // TODO 1: Definiere die PreferencesKey für Dark Theme
     }
 
     val alwaysOnScreenFlow: Flow<Boolean> = dataStore.data
@@ -32,15 +31,6 @@ class DataStore(context: Context) {
         }
     }
 
-    //TODO 2:  Definiere Flow Eigenschaft für DarkTheme, sowie die Funktion zur Einstellung
-    val darkThemeFlow : Flow<Boolean> = dataStore.data
-        .map { preferences ->
-            preferences[DARK_THEME] == true
-        }
+    // TODO 2:  Definiere Flow Eigenschaft für DarkTheme, sowie die Funktion zur Einstellung
 
-    suspend fun setDartkTheme(enabled: Boolean){
-        dataStore.edit { preferences ->
-            preferences[DARK_THEME] = enabled
-        }
-    }
 }
