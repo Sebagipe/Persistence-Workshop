@@ -21,20 +21,20 @@ class ToDoViewModel(
     fun saveEntry(name : String) {
         val newEntry = ListEntry(name = name)
         viewModelScope.launch(Dispatchers.IO) {
-            dao.insertEntry(newEntry)
+            dao.saveEntry(newEntry)
         }
 
     }
 
-    fun deleteEntry(entry: ListEntry) {
+    fun removeEntry(entry: ListEntry) {
         viewModelScope.launch(Dispatchers.IO) {
-            dao.deleteEntry(entry)
+            dao.removeEntry(entry)
         }
     }
 
-    fun changeCompletionStatus(entry: ListEntry, completed : Boolean) {
+    fun changeCompletionStatus(entry: ListEntry, changeStatusTo : Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            dao.updateEntry(entry.copy(completed = completed))
+            dao.changeEntry(entry.copy(completed = changeStatusTo))
         }
     }
 

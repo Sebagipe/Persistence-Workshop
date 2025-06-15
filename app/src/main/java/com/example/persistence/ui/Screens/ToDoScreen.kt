@@ -10,20 +10,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,9 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.example.persistence.Model.database.entities.ListEntry
-import com.example.persistence.ToDoScreen
 import com.example.persistence.viewmodels.ToDoViewModel
 
 
@@ -44,8 +37,8 @@ fun ToDoScreen(
     modifier: Modifier = Modifier,
     viewModel: ToDoViewModel = viewModel<ToDoViewModel>(),
 ) {
-    val incompleteEntries by viewModel.incompleteEntries.collectAsStateWithLifecycle(emptyList())
-    val completedEntries by viewModel.completedEntries.collectAsStateWithLifecycle(emptyList())
+    val incompleteEntries by viewModel.incompleteEntries.observeAsState()
+    val completedEntries by viewModel.completedEntries.observeAsState()
     ToDoScreen(modifier, incompleteEntries, completedEntries, viewModel)
 }
 @Preview
@@ -59,8 +52,8 @@ fun ToDoScreen(){
 @Composable
 fun ToDoScreen(
     modifier: Modifier,
-    incompleteEntries: List<ListEntry>,
-    completedEntries: List<ListEntry>,
+    incompleteEntries: List<ListEntry>?,
+    completedEntries: List<ListEntry>?,
     viewModel: ToDoViewModel
 ) {
     Column(
@@ -109,7 +102,7 @@ fun ToDoScreen(
                     Checkbox(
                         checked = false,
                         onCheckedChange = { viewModel.changeCompletionStatus(entry, true) })
-                    IconButton(onClick = { viewModel.deleteEntry(entry) }) {
+                    IconButton(onClick = { viewModel.removeEntry(entry) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete contact"
@@ -135,7 +128,7 @@ fun ToDoScreen(
                     Checkbox(
                         checked = true,
                         onCheckedChange = { viewModel.changeCompletionStatus(entry, false) })
-                    IconButton(onClick = { viewModel.deleteEntry(entry) }) {
+                    IconButton(onClick = { viewModel.removeEntry(entry) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete contact"
