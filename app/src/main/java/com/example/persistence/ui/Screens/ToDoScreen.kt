@@ -35,7 +35,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.persistence.Model.database.entities.ListEntry
-import com.example.persistence.ToDoScreen
 import com.example.persistence.viewmodels.ToDoViewModel
 
 
@@ -44,7 +43,7 @@ fun ToDoScreen(
     modifier: Modifier = Modifier,
     viewModel: ToDoViewModel = viewModel<ToDoViewModel>(),
 ) {
-    //TODO: Greife hier auf die Einträge in der Datenkbank über den ViewModel (Hinweis: LiveData)
+    //TODO 5: Greife hier auf die Einträge in der Datenkbank über den ViewModel (Hinweis: LiveData)
     val incompleteEntries by //..
     val completedEntries by //..
     ToDoScreen(modifier, incompleteEntries, completedEntries, viewModel)

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-// TODO: Implementiere Klasse, sodass es von Room in der Datenbank als Tabelle  angelegt wird
+// TODO 1: Implementiere Klasse, sodass es von Room in der Datenbank als Tabelle  angelegt wird
 //  .
 //  Folgende Attributen sollen vorhanden sein: (!!! Namen der Attribute bite genau so übernehmen)
 //      - taskID: Einen ID, der als Primärschlussel der Tabelle dienen soll
