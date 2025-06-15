@@ -16,7 +16,13 @@ class SettingsViewModel(
 
     fun setAlwaysOnDisplay (enabled : Boolean)  {
         viewModelScope.launch (Dispatchers.IO) {
-                dataStore.setAlwaysOnScreen(enabled)
+            dataStore.setAlwaysOnScreen(enabled)
+        }
+    }
+
+    fun setDarkTheme(enabled: Boolean) {
+        viewModelScope.launch (Dispatchers.IO) {
+            dataStore.setDartkTheme(enabled)
         }
     }
 

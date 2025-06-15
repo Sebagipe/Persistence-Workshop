@@ -40,10 +40,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             // Settings
             val isAlwaysOnScreen by settingsViewModel.dataStore.alwaysOnScreenFlow.collectAsStateWithLifecycle(initialValue = false)
+            val darkTheme by settingsViewModel.dataStore.darkThemeFlow.collectAsStateWithLifecycle(false)
+
+            // Actually setting alwaysOnScreen on and off
             if (isAlwaysOnScreen) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-            PersistenceTheme {
+            PersistenceTheme (darkTheme = darkTheme) {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = ToDoScreen) {
                     composable<ToDoScreen> {
@@ -93,6 +96,7 @@ class MainActivity : ComponentActivity() {
                                 SettingsScreen(
                                     viewModel = settingsViewModel,
                                     modifier = Modifier.padding(it),
+                                    darkThemeEnabled = darkTheme,
                                     isAlwaysOnScreen = isAlwaysOnScreen,
                                 )
                             }

@@ -25,6 +25,7 @@ import com.example.persistence.viewmodels.SettingsViewModel
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     isAlwaysOnScreen: Boolean,
+    darkThemeEnabled : Boolean,
     viewModel: SettingsViewModel = viewModel<SettingsViewModel>(),
     ) {
 
@@ -33,6 +34,11 @@ fun SettingsScreen(
             text = "Display Always On",
             isChecked = isAlwaysOnScreen,
             onCheckedChange = {viewModel.setAlwaysOnDisplay(!isAlwaysOnScreen)}
+        )
+        SettingsItem(
+            text = "Dark Theme",
+            isChecked = darkThemeEnabled,
+            onCheckedChange = {viewModel.setDarkTheme(!darkThemeEnabled)}
         )
     }
 }

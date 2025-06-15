@@ -32,9 +32,9 @@ class ToDoViewModel(
         }
     }
 
-    fun changeCompletionStatus(entry: ListEntry, completed : Boolean) {
+    fun changeCompletionStatus(entry: ListEntry, changeStatusTo : Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            dao.updateEntry(entry.copy(completed = completed))
+            dao.updateEntry(entry.copy(completed = changeStatusTo))
         }
     }
 
